@@ -1,0 +1,101 @@
+
+require 'rake/clean'
+require 'rest_client'
+
+#verbose(false)
+
+CLEAN.include('dist/**/content.*')
+CLEAN.include('dist/*.js')
+
+
+##################################################################################
+#
+# file list defination
+#
+
+# Files to make chrome extension
+CHROME_EXTENSION = FileList[
+  'src/helper.js',
+  'src/ui.js',
+  'src/observer.js',
+  'src/loader.js',
+  'src/loaderProxy.chrome.js',
+  'src/entry.js'
+]
+
+# Files to make firefox add-on
+FIREFOX_ADDON = FileList[
+  'src/helper.js',
+  'src/ui.js',
+  'src/observer.js',
+  'src/loader.js',
+  'src/loaderProxy.firefox.js',
+  'src/entry.js'
+]
+
+
+##################################################################################
+#
+# default task
+#
+task :default => [:chrome, :firefox]
+
+
+##################################################################################
+#
+# minimize JavaScript file
+#
+#  compilation_level:
+#   WHITESPACE_ONLY
+#   SIMPLE_OPTIMIZATIONS
+#   ADVANCED_OPTIMIZATIONS
+#
+rule 'content.js' => proc { |path|
+  if path =~ /chrome/ then
+    return 'dist/chrome.js'
+  elsif path =~ /firefox/ then
+    return 'dist/firefox.js'
+  end
+} do |t|
+  responce = RestClient.post 'http://closure-compiler.appspot.com/compile', {
+    :js_code => File.read(t.source),
+    :compilation_level => 'SIMPLE_OPTIMIZATIONS',
+    :output_format => 'text',
+    :output_info => 'compiled_code'
+  }
+  open(t.name, "w") {|f| f.write responce}
+end
+
+
+##################################################################################
+#
+# to make chrome extension
+#
+task :chrome => ['dist/chrome/content.js', 'dist/chrome/content.css', 'dist/chrome/manifest.json']
+
+file 'dist/chrome.js' => CHROME_EXTENSION do |t|
+  sh "echo '\"use strict\";' > #{t.name}"
+  sh "echo 'window.gpal = window.gpal || {};' >> #{t.name}"
+  sh "cat #{t.prerequisites.join(' ')} >> #{t.name}"
+end
+
+file 'dist/chrome/content.css' => 'style/content.css' do |t|
+  sh "cp #{t.prerequisites[0]} #{t.name}"
+end
+
+
+##################################################################################
+#
+# to make firefox add-on
+#
+task :firefox => ['dist/firefox/data/content.js', 'dist/firefox/data/content.css', 'dist/firefox/lib/main.js', 'dist/firefox/package.json']
+
+file 'dist/firefox.js' => FIREFOX_ADDON do |t|
+  sh "echo '\"use strict\";' > #{t.name}"
+  sh "echo 'window.gpal = window.gpal || {};' >> #{t.name}"
+  sh "cat #{t.prerequisites.join(' ')} >> #{t.name}"
+end
+
+file 'dist/firefox/data/content.css' => 'style/content.css' do |t|
+  sh "cp #{t.prerequisites[0]} #{t.name}"
+end
