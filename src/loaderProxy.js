@@ -1,13 +1,20 @@
 /************************************************************************
  *
- * Load New Posts
+ * Proxy to Load New Posts
  *
  */
-gpal.Loader = {
+gpal.LoaderProxy = {
 
   win: null,
   doc: null,
-  MARK_PROCESSED:  'processed',
+  MARK_PROCESSED: 'processed',
+  CLASS: {
+    POST:    'hi te'.split(' '),
+    EDITBOX: 'Lf editable'.split(' ')
+  },
+  SELECTOR: {
+    NEWPOSTS_BUTTON: '.d-k-l.b-c.b-c-T.fCd.PZa'
+  },
 
   /*
    * initialize this object
@@ -31,10 +38,10 @@ gpal.Loader = {
       gpal.NewPostsButton.hide();
 
       // do auto loading (only if comment box dosen't have focus)
-      btn = this.doc.querySelector(gpal.SELECTOR.NEWPOSTS_BUTTON)
+      btn = this.doc.querySelector(this.SELECTOR.NEWPOSTS_BUTTON);
       if (btn && btn.dataset.gpal !== this.MARK_PROCESSED && !this._isCommentBoxHasFocus()) {
         btn.dataset.gpal = this.MARK_PROCESSED;
-        gpal.LoaderProxy.load();
+        gpal.Loader.load();
       }
     }
 
@@ -53,8 +60,8 @@ gpal.Loader = {
     try {
       // lol, it's terrible code!!!
       return (focus &&
-              gpal.Utils.hasClasses(focus, gpal.CLASS.EDITBOX) &&
-              gpal.Utils.hasClasses(focus.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode, gpal.CLASS.POST));
+              gpal.Utils.hasClasses(focus, this.CLASS.EDITBOX) &&
+              gpal.Utils.hasClasses(focus.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode, this.CLASS.POST));
     }
     catch (error) {
       return false;

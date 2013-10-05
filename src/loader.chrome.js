@@ -1,9 +1,9 @@
 /************************************************************************
  *
- * Proxy for New Posts Loading (for Chrome Extension)
+ * Loading New Posts (for Chrome Extension)
  *
  */
-gpal.LoaderProxy = {
+gpal.Loader = {
 
   win: null,
   doc: null,
@@ -20,7 +20,7 @@ gpal.LoaderProxy = {
     this._injectExec(function() {
 
       window.gpal = window.gpal || {};
-      window.gpal.LoadProxy = {
+      window.gpal.Load = {
 
         load: function() {
           this.emulateKeyEvent('keydown',    0,  76, 'U+004C');
@@ -35,7 +35,7 @@ gpal.LoaderProxy = {
             cancelBubble:  false,
             cancelable:    true,
             keyIdentifier: keyIdentifier,
-            keyLocation:   0,
+            location:      0,
             view:          null
           });
 
@@ -57,7 +57,7 @@ gpal.LoaderProxy = {
    */
   load: function() {
     this._injectExec(function() {
-      window.gpal.LoadProxy.load();
+      window.gpal.Load.load();
     });
   },
 

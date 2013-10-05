@@ -1,6 +1,17 @@
-div.qyoDxe.v2DU7e {
+
+/*
+  blue button
+*/
+div.Cge.ZAc {
   visibility: hidden !important;
 }
-div.qyoDxe.v2DU7e._visible_ {
+div.Cge.ZAc._visible_ {
   visibility: visible !important;
+}
+
+/*
+  bookmark icon
+*/
+div.nZb {
+  visibility: hidden !important;
 }

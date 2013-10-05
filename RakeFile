@@ -18,8 +18,8 @@ CHROME_EXTENSION = FileList[
   'src/helper.js',
   'src/ui.js',
   'src/observer.js',
-  'src/loader.js',
-  'src/loaderProxy.chrome.js',
+  'src/loaderProxy.js',
+  'src/loader.chrome.js',
   'src/entry.js'
 ]
 
@@ -28,8 +28,8 @@ FIREFOX_ADDON = FileList[
   'src/helper.js',
   'src/ui.js',
   'src/observer.js',
-  'src/loader.js',
-  'src/loaderProxy.firefox.js',
+  'src/loaderProxy.js',
+  'src/loader.firefox.js',
   'src/entry.js'
 ]
 
@@ -52,9 +52,9 @@ task :default => [:chrome, :firefox]
 #
 rule 'content.js' => proc { |path|
   if path =~ /chrome/ then
-    return 'dist/chrome.js'
+    'dist/chrome.js'
   elsif path =~ /firefox/ then
-    return 'dist/firefox.js'
+    'dist/firefox.js'
   end
 } do |t|
   responce = RestClient.post 'http://closure-compiler.appspot.com/compile', {

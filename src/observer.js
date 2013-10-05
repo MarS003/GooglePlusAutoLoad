@@ -10,6 +10,12 @@ gpal.Observer = {
   dom: {
     pane: null
   },
+  ID: {
+    CONTENT_PANE: 'contentPane'
+  },
+  CLASS: {
+    NEWPOSTS_BUTTON: 'd-k-l b-c b-c-T fCd PZa'.split(' ')
+  },
 
   /*
    * initialize this object
@@ -17,7 +23,7 @@ gpal.Observer = {
   init: function(win, doc) {
     this.win = win;
     this.doc = doc;
-    this.dom.pane = doc.getElementById(gpal.ID.CONTENT_PANE);
+    this.dom.pane = doc.getElementById(this.ID.CONTENT_PANE);
   },
 
   /*
@@ -33,10 +39,10 @@ gpal.Observer = {
     // observe node tree mutation
     observer = new MutationObserver(function(mutations) {
       mutations.forEach(function(mutation) {
-        var i = mutation.addedNodes.length, node;
+        var i = mutation.addedNodes ? mutation.addedNodes.length : 0, node;
         while (i--) {
           node = mutation.addedNodes[i];
-          if (gpal.Utils.hasClasses(node, gpal.CLASS.NEWPOSTS_BUTTON)) {
+          if (node.parentNode && gpal.Utils.hasClasses(node, self.CLASS.NEWPOSTS_BUTTON)) {
             self._onNewPosts();
           }
         }
@@ -56,14 +62,14 @@ gpal.Observer = {
    * called when new posts available
    */
   _onNewPosts: function() {
-    gpal.Loader.load();
+    gpal.LoaderProxy.load();
   },
 
   /*
    * called when scroll on top
    */
   _onScrollTop: function() {
-    gpal.Loader.load();
+    gpal.LoaderProxy.load();
   }
 
 };

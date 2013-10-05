@@ -1,28 +1,10 @@
 
-/*--------------------------------------------------------------------
- * ID attribute definition
- */
-gpal.ID = {
-  CONTENT_PANE:  'contentPane'
-};
-
-
-/*--------------------------------------------------------------------
- * CLASS attribute definition
- */
-gpal.CLASS = {
-  POST:             'Tg Sb'.split(' '),
-  NEWPOSTS_BUTTON:  'a-f-e c-b c-b-M f8ocqf Ri07Rc'.split(' '),
-  EDITBOX:          'yd editable'.split(' ')
-};
-
-/*--------------------------------------------------------------------
- * Query Selector string
- */
-gpal.SELECTOR = {
-  NEWPOSTS_AREA:        '.qyoDxe.v2DU7e',
-  NEWPOSTS_BUTTON:      '.pdsQUd.vqlG > [role="button"]'
-};
+/*
+ .Cge.ZAc(.bBc.aBc)
+  > .d-k-l.b-c.b-c-T.fCd.PZa[role="button"] // reload button
+  > .d-k-l.b-c.b-c-T.Qgc.PZa[role="button"] // resume button
+  > .nZb // bookmark icon
+*/
 
 /*--------------------------------------------------------------------
  * Some helper functions

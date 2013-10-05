@@ -1,9 +1,9 @@
 /************************************************************************
  *
- * Proxy for New Posts Loading (for Firefox add-on)
+ * Loading New Posts (for Firefox add-on)
  *
  */
-gpal.LoaderProxy = {
+gpal.Loader = {
 
   win: null,
   doc: null,
