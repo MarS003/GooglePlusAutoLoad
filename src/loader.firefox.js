@@ -5,15 +5,10 @@
  */
 gpal.Loader = {
 
-  win: null,
-  doc: null,
-
   /*
    * initialize this object
    */
-  init: function(win, doc) {
-    this.win = win;
-    this.doc = doc;
+  init: function() {
   },
 
   /*
@@ -26,9 +21,9 @@ gpal.Loader = {
   },
 
   emulateKeyEvent: function(type, charCode, keyCode, keyIdentifier) {
-    var ev = this.doc.createEvent('KeyboardEvent');
+    var ev = gpal.doc.createEvent('KeyboardEvent');
     ev.initKeyEvent(type, true, true, null, false, false, false, false, keyCode, charCode);
-    this.doc.dispatchEvent(ev);
+    gpal.doc.dispatchEvent(ev);
   }
 
 };

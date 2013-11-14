@@ -5,16 +5,10 @@
  */
 gpal.Loader = {
 
-  win: null,
-  doc: null,
-
   /*
    * initialize this object
    */
-  init: function(win, doc) {
-
-    this.win = win;
-    this.doc = doc;
+  init: function() {
 
     // define LoadProxy as global object on host page
     this._injectExec(function() {
@@ -65,9 +59,9 @@ gpal.Loader = {
    * inject code into host page as immediate function
    */
   _injectExec: function(func) {
-    var script = this.doc.createElement('script');
+    var script = gpal.doc.createElement('script');
     script.textContent = '(' + func.toString() + ')();';
-    this.doc.head.appendChild(script);
+    gpal.doc.head.appendChild(script);
     script.parentNode.removeChild(script);
   }
 

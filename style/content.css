@@ -2,16 +2,16 @@
 /*
   blue button
 */
-div.Cge.ZAc {
+div.Cge.ZAc, div.tke.oDc {
   visibility: hidden !important;
 }
-div.Cge.ZAc._visible_ {
+div.Cge.ZAc._visible_, div.tke.oDc._visible_ {
   visibility: visible !important;
 }
 
 /*
   bookmark icon
 */
-div.nZb {
+div.nZb, div.F4 {
   visibility: hidden !important;
 }

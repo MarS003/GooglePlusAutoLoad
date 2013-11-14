@@ -4,6 +4,12 @@
   > .d-k-l.b-c.b-c-T.fCd.PZa[role="button"] // reload button
   > .d-k-l.b-c.b-c-T.Qgc.PZa[role="button"] // resume button
   > .nZb // bookmark icon
+
+tke oDc(qDc pDc) // (on scroll down)
+ > d-k-l b-c b-c-U JFd JZ // reload button
+ > d-k-l b-c b-c-U Yic JZ // resume button
+ > F4 // bookmark icon
+
 */
 
 /*--------------------------------------------------------------------
@@ -35,11 +41,10 @@ gpal.Utils = {
   /*
    * check whether scroll position is at top or not
    */
-  isScrollTop: function(doc) {
-    var scrollTop = doc.body.scrollTop || doc.documentElement.scrollTop;
-    return scrollTop <= 100;
+  isScrollTop: function() {
+    return (gpal.doc.body.scrollTop || gpal.doc.documentElement.scrollTop) <= 100;
   }
-
+  
 };
 
 
