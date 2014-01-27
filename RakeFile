@@ -5,7 +5,14 @@ require 'rest_client'
 #verbose(false)
 
 CLEAN.include('dist/**/content.*')
+CLEAN.include('dist/**/*.png')
 CLEAN.include('dist/*.js')
+CLEAN.include('dist/*.zip')
+CLEAN.include('dist/*.crx')
+CLEAN.include('dist/*.nex')
+CLEAN.include('dist/*.pem')
+CLEAN.include('dist/**/*.xpi')
+CLEAN.include('dist/**/*.safariextz')
 
 
 ##################################################################################
@@ -14,7 +21,7 @@ CLEAN.include('dist/*.js')
 #
 
 # Files to make chrome extension
-CHROME_EXTENSION = FileList[
+CHROME_JS = FileList[
   'src/helper.js',
   'src/ui.js',
   'src/observer.js',
@@ -23,8 +30,18 @@ CHROME_EXTENSION = FileList[
   'src/entry.js'
 ]
 
+# Files to make opera extension
+OPERA_JS = FileList[
+  'src/helper.js',
+  'src/ui.js',
+  'src/observer.js',
+  'src/loaderProxy.js',
+  'src/loader.chrome.js', # identically same as chrome
+  'src/entry.js'
+]
+
 # Files to make firefox add-on
-FIREFOX_ADDON = FileList[
+FIREFOX_JS = FileList[
   'src/helper.js',
   'src/ui.js',
   'src/observer.js',
@@ -33,17 +50,26 @@ FIREFOX_ADDON = FileList[
   'src/entry.js'
 ]
 
+# Files to make safari extension
+SAFARI_JS = FileList[
+  'src/helper.js',
+  'src/ui.js',
+  'src/observer.js',
+  'src/loaderProxy.js',
+  'src/loader.safari.js',
+  'src/entry.js'
+]
 
 ##################################################################################
 #
 # default task
 #
-task :default => [:chrome, :firefox]
+task :default => [:chrome, :opera, :firefox, :safari]
 
 
 ##################################################################################
 #
-# minimize JavaScript file
+# rule: minimize JavaScript file
 #
 #  compilation_level:
 #   WHITESPACE_ONLY
@@ -55,6 +81,8 @@ rule 'content.js' => proc { |path|
     'dist/chrome.js'
   elsif path =~ /firefox/ then
     'dist/firefox.js'
+  elsif path =~ /safari/ then
+    'dist/safari.js'
   end
 } do |t|
   responce = RestClient.post 'http://closure-compiler.appspot.com/compile', {
@@ -69,33 +97,95 @@ end
 
 ##################################################################################
 #
-# to make chrome extension
+# rule: copy icon file
 #
-task :chrome => ['dist/chrome/content.js', 'dist/chrome/content.css', 'dist/chrome/manifest.json']
-
-file 'dist/chrome.js' => CHROME_EXTENSION do |t|
-  sh "echo '\"use strict\";' > #{t.name}"
-  sh "echo 'window.gpal = window.gpal || {};' >> #{t.name}"
-  sh "cat #{t.prerequisites.join(' ')} >> #{t.name}"
-end
-
-file 'dist/chrome/content.css' => 'style/content.css' do |t|
-  sh "cp #{t.prerequisites[0]} #{t.name}"
+rule (/.*\.png/) do |t|
+  basename = File::basename(t.name)
+  sh "cp contrib/icon/#{basename} #{t.name}"
 end
 
 
 ##################################################################################
 #
-# to make firefox add-on
+# rule: copy css file
 #
-task :firefox => ['dist/firefox/data/content.js', 'dist/firefox/data/content.css', 'dist/firefox/lib/main.js', 'dist/firefox/package.json']
+rule (/.*\.css/) do |t|
+  basename = File::basename(t.name)
+  sh "cp style/#{basename} #{t.name}"
+end
 
-file 'dist/firefox.js' => FIREFOX_ADDON do |t|
+
+##################################################################################
+#
+# task: to make chrome extension
+#
+task :chrome => ['dist/chrome.zip']
+
+file 'dist/chrome.zip' => ['dist/chrome/content.js',
+                           'dist/chrome/content.css',
+                           'dist/chrome/manifest.json',
+                           'dist/chrome/icon16.png',
+                           'dist/chrome/icon48.png',
+                           'dist/chrome/icon128.png'] do |t|
+  archive = t.prerequisites.join(' ');
+  sh "zip -q #{t.name} #{archive}"
+end
+
+file 'dist/chrome.js' => CHROME_JS do |t|
   sh "echo '\"use strict\";' > #{t.name}"
   sh "echo 'window.gpal = window.gpal || {};' >> #{t.name}"
   sh "cat #{t.prerequisites.join(' ')} >> #{t.name}"
 end
 
-file 'dist/firefox/data/content.css' => 'style/content.css' do |t|
-  sh "cp #{t.prerequisites[0]} #{t.name}"
+
+##################################################################################
+#
+# task: to make opera add-on
+#
+task :opera => ['dist/opera/content.js',
+                'dist/opera/content.css',
+                'dist/opera/manifest.json',
+                'dist/opera/icon16.png',
+                'dist/opera/icon48.png',
+                'dist/opera/icon128.png']
+
+file 'dist/opera.js' => OPERA_JS do |t|
+  sh "echo '\"use strict\";' > #{t.name}"
+  sh "echo 'window.gpal = window.gpal || {};' >> #{t.name}"
+  sh "cat #{t.prerequisites.join(' ')} >> #{t.name}"
+end
+
+
+##################################################################################
+#
+# task: to make firefox add-on
+#
+task :firefox => ['dist/auto-load-new-posts-for-google-plus.xpi']
+
+file 'dist/auto-load-new-posts-for-google-plus.xpi' => ['dist/firefox/data/content.js',
+                                                        'dist/firefox/data/content.css',
+                                                        'dist/firefox/lib/main.js',
+                                                        'dist/firefox/package.json'] do |t|
+  CFX_PATH = "~/Library/Developer/Local/Firefox/addon-sdk/bin/cfx"
+  sh "(cd dist; #{CFX_PATH} --pkgdir=firefox xpi;)"
+end
+
+file 'dist/firefox.js' => FIREFOX_JS do |t|
+  sh "echo '\"use strict\";' > #{t.name}"
+  sh "echo 'window.gpal = window.gpal || {};' >> #{t.name}"
+  sh "cat #{t.prerequisites.join(' ')} >> #{t.name}"
+end
+
+
+##################################################################################
+#
+# task: to make safari extension
+#
+task :safari => ['dist/safari/gpal.safariextension/content.js',
+                 'dist/asfari/gpal.safariextension/content.css']
+
+file 'dist/firefox.js' => SAFARI_JS do |t|
+  sh "echo '\"use strict\";' > #{t.name}"
+  sh "echo 'window.gpal = window.gpal || {};' >> #{t.name}"
+  sh "cat #{t.prerequisites.join(' ')} >> #{t.name}"
 end
