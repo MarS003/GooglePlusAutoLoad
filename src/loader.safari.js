@@ -17,17 +17,10 @@ gpal.Loader = {
    * do auto loading
    */
   load: function() {
-    this.emulateKeyEvent('keydown',    0,  76, 'U+004C');
-    this.emulateKeyEvent('keypress', 108, 108, 'U+004C');
-    this.emulateKeyEvent('keyup',      0,  76, 'U+004C');
-  },
-
-  emulateKeyEvent: function(type, charCode, keyCode, keyIdentifier) {
-    var ev = gpal.doc.createEvent('KeyboardEvent');
-    //TODO ev.e.initKeyboardEvent(type, true, true, null, false, false, false, false, keyCode, charCode);
-    gpal.doc.dispatchEvent(ev);
+    var btn = gpal.doc.querySelector(gpal.SELECTOR.RELOAD_BUTTON);
+    if (btn) {
+      btn.click();
+    }
   }
 
 };
-
-

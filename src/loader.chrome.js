@@ -19,12 +19,12 @@ gpal.Loader = {
       window.gpal.Load = {
 
         load: function() {
-          this.emulateKeyEvent('keydown',    0,  76, 'U+004C');
-          this.emulateKeyEvent('keypress', 108, 108, 'U+004C');
-          this.emulateKeyEvent('keyup',      0,  76, 'U+004C');
+          this._emulateKeyEvent('keydown',    0,  76, 'U+004C');
+          this._emulateKeyEvent('keypress', 108, 108, 'U+004C');
+          this._emulateKeyEvent('keyup',      0,  76, 'U+004C');
         },
 
-        emulateKeyEvent: function(type, charCode, keyCode, keyIdentifier) {
+        _emulateKeyEvent: function(type, charCode, keyCode, keyIdentifier) {
 
           var ev = new KeyboardEvent(type, {
             bubbles:       true,

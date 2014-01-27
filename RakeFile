@@ -11,8 +11,8 @@ CLEAN.include('dist/*.zip')
 CLEAN.include('dist/*.crx')
 CLEAN.include('dist/*.nex')
 CLEAN.include('dist/*.pem')
-CLEAN.include('dist/**/*.xpi')
-CLEAN.include('dist/**/*.safariextz')
+CLEAN.include('dist/*.xpi')
+CLEAN.include('dist/*.safariextz')
 
 
 ##################################################################################
@@ -122,9 +122,9 @@ task :chrome => ['dist/chrome.zip']
 file 'dist/chrome.zip' => ['dist/chrome/content.js',
                            'dist/chrome/content.css',
                            'dist/chrome/manifest.json',
-                           'dist/chrome/icon16.png',
-                           'dist/chrome/icon48.png',
-                           'dist/chrome/icon128.png'] do |t|
+                           'dist/chrome/icon-16.png',
+                           'dist/chrome/icon-48.png',
+                           'dist/chrome/icon-128.png'] do |t|
   archive = t.prerequisites.join(' ');
   sh "zip -q #{t.name} #{archive}"
 end
@@ -143,9 +143,9 @@ end
 task :opera => ['dist/opera/content.js',
                 'dist/opera/content.css',
                 'dist/opera/manifest.json',
-                'dist/opera/icon16.png',
-                'dist/opera/icon48.png',
-                'dist/opera/icon128.png']
+                'dist/opera/icon-16.png',
+                'dist/opera/icon-48.png',
+                'dist/opera/icon-128.png']
 
 file 'dist/content.opera.js' => OPERA_JS do |t|
   sh "echo '\"use strict\";' > #{t.name}"
@@ -179,8 +179,9 @@ end
 #
 # task: to make safari extension
 #
-task :safari => ['dist/safari/gpal.safariextension/content.js',
-                 'dist/safari/gpal.safariextension/content.css']
+task :safari => ['dist/safari/autol-load-new-posts-for-google-plus.safariextension/content.js',
+                 'dist/safari/autol-load-new-posts-for-google-plus.safariextension/content.css',
+                 'dist/safari/autol-load-new-posts-for-google-plus.safariextension/icon-128.png']
 
 file 'dist/content.safari.js' => SAFARI_JS do |t|
   sh "echo '\"use strict\";' > #{t.name}"
