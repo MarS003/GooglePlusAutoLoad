@@ -2,7 +2,7 @@
 require 'rake/clean'
 require 'rest_client'
 
-#verbose(false)
+verbose(true)
 
 CLEAN.include('dist/**/content.*')
 CLEAN.include('dist/**/*.png')
@@ -79,7 +79,7 @@ task :default => [:chrome, :opera, :firefox, :safari]
 rule 'content.js' => proc { |path|
   if    path =~ /chrome/  then 'dist/content.chrome.js'
   elsif path =~ /opera/   then 'dist/content.opera.js'
-  elsif path =~ /firefox/ then 'dist/content.firefox.js'
+ #elsif path =~ /firefox/ then 'dist/content.firefox.js'
   elsif path =~ /safari/  then 'dist/content.safari.js'
   end
 } do |t|
@@ -168,7 +168,7 @@ file 'dist/auto-load-new-posts-for-google-plus.xpi' => ['dist/firefox/data/conte
   sh "(cd dist; #{CFX_PATH} --pkgdir=firefox xpi;)"
 end
 
-file 'dist/content.firefox.js' => FIREFOX_JS do |t|
+file 'dist/firefox/data/content.js' => FIREFOX_JS do |t|
   sh "echo '\"use strict\";' > #{t.name}"
   sh "echo 'window.gpal = window.gpal || {};' >> #{t.name}"
   sh "cat #{t.prerequisites.join(' ')} >> #{t.name}"
@@ -180,7 +180,7 @@ end
 # task: to make safari extension
 #
 task :safari => ['dist/safari/gpal.safariextension/content.js',
-                 'dist/asfari/gpal.safariextension/content.css']
+                 'dist/safari/gpal.safariextension/content.css']
 
 file 'dist/content.safari.js' => SAFARI_JS do |t|
   sh "echo '\"use strict\";' > #{t.name}"
