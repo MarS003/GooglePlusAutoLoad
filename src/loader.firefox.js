@@ -1,3 +1,5 @@
+/* global gpal: true; */
+
 /************************************************************************
  *
  * Loading New Posts (for Firefox add-on)
@@ -27,5 +29,3 @@ gpal.Loader = {
   }
 
 };
-
-

@@ -1,3 +1,5 @@
+/* global gpal: true; */
+
 /************************************************************************
  *
  * Observe Some Events
@@ -5,35 +7,33 @@
  */
 gpal.Observer = {
 
-
   /*
    * begin to observe events
    */
   run: function() {
 
-    var observer, self = this;
     if (!gpal.dom.pane) {
       return;
     }
 
-    // observe node tree mutation
-    observer = new MutationObserver(function(mutations) {
+    // observe adding reload button node
+    var observer = new MutationObserver(function(mutations) {
       mutations.forEach(function(mutation) {
-        var i = mutation.addedNodes ? mutation.addedNodes.length : 0, node;
+        var i = mutation.addedNodes ? mutation.addedNodes.length : 0;
         while (i--) {
-          node = mutation.addedNodes[i];
-          if (node.parentNode && gpal.Utils.hasClasses(node, gpal.CLASS.RELOAD_BUTTON)) {
-            self._onNewPosts();
+          var node = mutation.addedNodes[i];
+          if (gpal.Utils.hasClasses(node, gpal.CLASS.RELOAD_BUTTON)) {
+            gpal.Observer._onNewPosts();
           }
         }
       });
     });
     observer.observe(gpal.dom.pane, {childList: true, subtree: true});
 
-    // listen scroll event
-    gpal.win.addEventListener('scroll', function(event) {
+    // observe scrolling to top
+    gpal.win.addEventListener('scroll', function() {
       if (gpal.Utils.isScrollTop()) {
-        self._onScrollTop();
+        gpal.Observer._onScrollTop();
       }
     });
   },
@@ -53,5 +53,3 @@ gpal.Observer = {
   }
 
 };
-
-

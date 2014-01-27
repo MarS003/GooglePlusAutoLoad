@@ -1,17 +1,12 @@
-
-/*
-  blue button
-*/
-div.Cge.ZAc, div.tke.oDc {
+/* blue button */
+.tke.oDc {
   visibility: hidden !important;
 }
-div.Cge.ZAc._visible_, div.tke.oDc._visible_ {
+div[data-gpal-visible='true'].tke.oDc {
   visibility: visible !important;
 }
 
-/*
-  bookmark icon
-*/
-div.nZb, div.F4 {
+/* bookmark icon */
+.nZb, .F4 {
   visibility: hidden !important;
 }

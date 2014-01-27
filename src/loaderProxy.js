@@ -1,3 +1,5 @@
+/* global gpal: true; */
+
 /************************************************************************
  *
  * Proxy to Load New Posts
@@ -5,14 +7,10 @@
  */
 gpal.LoaderProxy = {
 
-  MARK_PROCESSED: 'processed',
-
   /*
    * try to load new posts
    */
   load: function() {
-
-    var btn;
 
     // if document is at scroll top
     if (gpal.Utils.isScrollTop()) {
@@ -20,14 +18,14 @@ gpal.LoaderProxy = {
       // hide 'New Posts' button
       gpal.NewPostsButton.hide();
 
-      // do auto loading (only if comment box dosen't have focus)
-      btn = gpal.doc.querySelector(gpal.SELECTOR.RELOAD_BUTTON);
-      if (btn && btn.dataset.gpal !== this.MARK_PROCESSED && !this._isCommentBoxHasFocus()) {
-        btn.dataset.gpal = this.MARK_PROCESSED;
+      // if not yet processed, and comment box dosen't have focus
+      var btn = gpal.doc.querySelector(gpal.SELECTOR.RELOAD_BUTTON);
+      if (btn && !btn.dataset.gpalProcessed && !this._isCommentBoxHasFocus()) {
+        btn.dataset.gpalProcessed = true;
+        // do auto loading
         gpal.Loader.load();
       }
     }
-
     // if document is not at scroll top
     else {
       // show 'New Posts' button
@@ -41,9 +39,7 @@ gpal.LoaderProxy = {
   _isCommentBoxHasFocus: function() {
     var focus = gpal.doc.activeElement;
     try {
-      return (focus &&
-              gpal.Utils.hasClasses(focus, ['editable']) &&
-              !focus.parentNode.parentNode.id.search(/\:.+\.editor/));
+      return (focus && gpal.Utils.hasClasses(focus, ['editable']) && !focus.parentNode.parentNode.id.search(/\:.+\.editor/));
     }
     catch (error) {
       return false;
@@ -51,5 +47,3 @@ gpal.LoaderProxy = {
   }
 
 };
-
-

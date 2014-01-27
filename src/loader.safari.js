@@ -1,3 +1,5 @@
+/* global gpal: true; */
+
 /************************************************************************
  *
  * Loading New Posts (for Firefox add-on)
@@ -22,7 +24,7 @@ gpal.Loader = {
 
   emulateKeyEvent: function(type, charCode, keyCode, keyIdentifier) {
     var ev = gpal.doc.createEvent('KeyboardEvent');
-    ev.initKeyEvent(type, true, true, null, false, false, false, false, keyCode, charCode);
+    //TODO ev.e.initKeyboardEvent(type, true, true, null, false, false, false, false, keyCode, charCode);
     gpal.doc.dispatchEvent(ev);
   }
 

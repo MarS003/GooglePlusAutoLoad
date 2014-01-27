@@ -1,3 +1,5 @@
+/* global gpal: true, KeyboardEvent: true; */
+
 /************************************************************************
  *
  * Loading New Posts (for Chrome Extension)
@@ -66,5 +68,3 @@ gpal.Loader = {
   }
 
 };
-
-

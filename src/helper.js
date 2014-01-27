@@ -1,19 +1,9 @@
+/* global gpal: true; */
 
-/*
- .Cge.ZAc(.bBc.aBc)
-  > .d-k-l.b-c.b-c-T.fCd.PZa[role="button"] // reload button
-  > .d-k-l.b-c.b-c-T.Qgc.PZa[role="button"] // resume button
-  > .nZb // bookmark icon
-
-tke oDc(qDc pDc) // (on scroll down)
- > d-k-l b-c b-c-U JFd JZ // reload button
- > d-k-l b-c b-c-U Yic JZ // resume button
- > F4 // bookmark icon
-
-*/
-
-/*--------------------------------------------------------------------
+/************************************************************************
+ *
  * Some helper functions
+ *
  */
 gpal.Utils = {
 
@@ -22,13 +12,11 @@ gpal.Utils = {
    */
   hasClasses: function(elem, classList) {
 
-    var i;
-
     if (!elem || !elem.classList) {
       return false;
     }
 
-    i = classList.length;
+    var i = classList.length;
     while (i--) {
       if (!elem.classList.contains(classList[i])) {
         return false;
@@ -46,5 +34,3 @@ gpal.Utils = {
   }
   
 };
-
-
