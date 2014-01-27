@@ -77,12 +77,10 @@ task :default => [:chrome, :opera, :firefox, :safari]
 #   ADVANCED_OPTIMIZATIONS
 #
 rule 'content.js' => proc { |path|
-  if path =~ /chrome/ then
-    'dist/chrome.js'
-  elsif path =~ /firefox/ then
-    'dist/firefox.js'
-  elsif path =~ /safari/ then
-    'dist/safari.js'
+  if    path =~ /chrome/  then 'dist/content.chrome.js'
+  elsif path =~ /opera/   then 'dist/content.opera.js'
+  elsif path =~ /firefox/ then 'dist/content.firefox.js'
+  elsif path =~ /safari/  then 'dist/content.safari.js'
   end
 } do |t|
   responce = RestClient.post 'http://closure-compiler.appspot.com/compile', {
@@ -131,7 +129,7 @@ file 'dist/chrome.zip' => ['dist/chrome/content.js',
   sh "zip -q #{t.name} #{archive}"
 end
 
-file 'dist/chrome.js' => CHROME_JS do |t|
+file 'dist/content.chrome.js' => CHROME_JS do |t|
   sh "echo '\"use strict\";' > #{t.name}"
   sh "echo 'window.gpal = window.gpal || {};' >> #{t.name}"
   sh "cat #{t.prerequisites.join(' ')} >> #{t.name}"
@@ -149,7 +147,7 @@ task :opera => ['dist/opera/content.js',
                 'dist/opera/icon48.png',
                 'dist/opera/icon128.png']
 
-file 'dist/opera.js' => OPERA_JS do |t|
+file 'dist/content.opera.js' => OPERA_JS do |t|
   sh "echo '\"use strict\";' > #{t.name}"
   sh "echo 'window.gpal = window.gpal || {};' >> #{t.name}"
   sh "cat #{t.prerequisites.join(' ')} >> #{t.name}"
@@ -170,7 +168,7 @@ file 'dist/auto-load-new-posts-for-google-plus.xpi' => ['dist/firefox/data/conte
   sh "(cd dist; #{CFX_PATH} --pkgdir=firefox xpi;)"
 end
 
-file 'dist/firefox.js' => FIREFOX_JS do |t|
+file 'dist/content.firefox.js' => FIREFOX_JS do |t|
   sh "echo '\"use strict\";' > #{t.name}"
   sh "echo 'window.gpal = window.gpal || {};' >> #{t.name}"
   sh "cat #{t.prerequisites.join(' ')} >> #{t.name}"
@@ -184,7 +182,7 @@ end
 task :safari => ['dist/safari/gpal.safariextension/content.js',
                  'dist/asfari/gpal.safariextension/content.css']
 
-file 'dist/firefox.js' => SAFARI_JS do |t|
+file 'dist/content.safari.js' => SAFARI_JS do |t|
   sh "echo '\"use strict\";' > #{t.name}"
   sh "echo 'window.gpal = window.gpal || {};' >> #{t.name}"
   sh "cat #{t.prerequisites.join(' ')} >> #{t.name}"
