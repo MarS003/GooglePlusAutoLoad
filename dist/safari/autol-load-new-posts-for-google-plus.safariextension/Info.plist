@@ -34,7 +34,7 @@
 		</array>
 	</dict>
 	<key>Description</key>
-	<string>Auto Load New Posts.</string>
+	<string>Load new posts on Google+ automatically.</string>
 	<key>ExtensionInfoDictionaryVersion</key>
 	<string>1.0</string>
 	<key>Permissions</key>
