@@ -20,6 +20,7 @@ gpal.Loader = {
     this._emulateKeyEvent('keydown',    0,  76, 'U+004C');
     this._emulateKeyEvent('keypress', 108, 108, 'U+004C');
     this._emulateKeyEvent('keyup',      0,  76, 'U+004C');
+    return true;
   },
 
   _emulateKeyEvent: function(type, charCode, keyCode, keyIdentifier) {

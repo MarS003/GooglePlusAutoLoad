@@ -21,9 +21,10 @@ gpal.LoaderProxy = {
       // if not yet processed, and comment box dosen't have focus
       var btn = gpal.doc.querySelector(gpal.SELECTOR.RELOAD_BUTTON);
       if (btn && !btn.dataset.gpalProcessed && !this._isCommentBoxHasFocus()) {
-        btn.dataset.gpalProcessed = true;
         // do auto loading
-        gpal.Loader.load();
+        if (gpal.Loader.load()) {
+          btn.dataset.gpalProcessed = true;
+        }
       }
     }
     // if document is not at scroll top

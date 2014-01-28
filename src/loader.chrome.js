@@ -55,6 +55,7 @@ gpal.Loader = {
     this._injectExec(function() {
       window.gpal.Load.load();
     });
+    return true;
   },
 
   /*
