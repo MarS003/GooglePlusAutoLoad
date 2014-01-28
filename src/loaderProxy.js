@@ -19,11 +19,10 @@ gpal.LoaderProxy = {
       gpal.NewPostsButton.hide();
 
       // if not yet processed, and comment box dosen't have focus
-      var btn = gpal.doc.querySelector(gpal.SELECTOR.RELOAD_BUTTON);
-      if (btn && !btn.dataset.gpalProcessed && !this._isCommentBoxHasFocus()) {
+      if (gpal.NewPostsButton.isNotProcessed() && !this._isCommentBoxHasFocus()) {
         // do auto loading
         if (gpal.Loader.load()) {
-          btn.dataset.gpalProcessed = true;
+          gpal.NewPostsButton.markProcessed();
         }
       }
     }

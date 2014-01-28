@@ -15,16 +15,15 @@
   gpal.CLASS    = {};
 
   //
-  // .tke.oDc  <= button area (this extension toggle visibility of this area)
-  //   .d-k-l.b-c.b-c-U.JFd.JZ[role="button"]  <= reload button (this extension check new posts by this area)
+  // .tke.oDc
+  //   .d-k-l.b-c.b-c-U.JFd.JZ[role="button"]  <= reload button
   //     .b1b
   //       (text: N new)
-  //   .d-k-l.b-c.b-c-U.Yic.JZ[role="button"]  <= resume button (always hidden)
+  //   .d-k-l.b-c.b-c-U.Yic.JZ[role="button"]  <= resume button
   //     .b1b
   //       (text: Resume)
-  //   .F4  <= bookmark icon (always hidden)
+  //   .F4  <= bookmark icon
   //
-  gpal.SELECTOR.BUTTON_AREA   = '.tke.oDc';
   gpal.SELECTOR.RELOAD_BUTTON = '.d-k-l.b-c.b-c-U.JFd.JZ';
   gpal.CLASS.RELOAD_BUTTON    = ['d-k-l', 'b-c', 'b-c-U', 'JFd', 'JZ'];
 
