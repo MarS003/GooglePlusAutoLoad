@@ -1,32 +1,40 @@
-var gpal = gpal || {};
-
 /**************************************************************************************
  *
- * Loading New Posts (for Firefox Extension)
+ * Loading New Posts (for Firefox add-on)
  *
  *************************************************************************************/
-gpal.Loader = {
+(function(doc){
 
-  /*
-   * initialize this object
-   */
-  init: function() {
-  },
+  //
+  // initialize this object
+  //
+  var init = function() {
+  };
 
-  /*
-   * do auto loading
-   */
-  load: function() {
-    this._emulateKeyEvent('keydown',    0,  76, 'U+004C');
-    this._emulateKeyEvent('keypress', 108, 108, 'U+004C');
-    this._emulateKeyEvent('keyup',      0,  76, 'U+004C');
+  var load = function() {
+    emulateKeyEvent('keydown',    0,  76, 'U+004C');
+    emulateKeyEvent('keypress', 108, 108, 'U+004C');
+    emulateKeyEvent('keyup',      0,  76, 'U+004C');
     return true;
-  },
+  };
 
-  _emulateKeyEvent: function(type, charCode, keyCode, keyIdentifier) {
-    var ev = document.createEvent('KeyboardEvent');
+  //
+  // do auto loading
+  //
+  var emulateKeyEvent = function(type, charCode, keyCode, keyIdentifier) {
+    var ev = doc.createEvent('KeyboardEvent');
     ev.initKeyEvent(type, true, true, null, false, false, false, false, keyCode, charCode);
-    document.dispatchEvent(ev);
-  }
+    doc.dispatchEvent(ev);
+  };
 
-};
+  //
+  // exports
+  //
+  var global = this;
+  global.gpal = global.gpal || {};
+  global.gpal.Loader = {
+    init: init,
+    load: load
+  };
+
+}(document));

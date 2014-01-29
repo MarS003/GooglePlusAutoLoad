@@ -168,7 +168,7 @@
     var isCommentBoxHasFocus = function() {
       var focus = doc.activeElement;
       try {
-        return (focus && hasClasses(focus, ['editable']) && !focus.parentNode.parentNode.id.search(/\:.+\.editor/));
+        return (focus && hasClasses(focus, ['editable']) && !focus.parentNode.parentNode.id.search(/.+\.editor$/));
       }
       catch (error) {
         return false;
@@ -195,6 +195,17 @@
       newPostsButton.show();
     }
   };
+
+  /**************************************************************************************
+   *
+   * export some variables
+   *
+   *************************************************************************************/
+  var global = this;
+  global.gpal = global.gpal || {};
+  global.gpal.SELECTOR = SELECTOR;
+  global.gpal.CLASS    = CLASS;
+  global.gpal.autoLoad = autoLoad;
 
   /**************************************************************************************
    *

@@ -1,6 +1,5 @@
 {
   "name": "auto-load-new-posts-for-google-plus",
-  "version": "1.3.10",
   "devDependencies": {
     "gulp-concat": "*",
     "gulp-uglify": "*",
