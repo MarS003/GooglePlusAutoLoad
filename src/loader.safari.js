@@ -27,7 +27,7 @@
           gpal.autoLoad();
         }
       });
-      observer.observe(frame, {attributes: true, attributeFilter: ['aria-hidden']});
+      observer.observe(frame, {attributes: true, attributeFilter: ["aria-hidden"]});
       return false;
     }
 

@@ -1,4 +1,4 @@
-/* global gpal: true; */
+/* global gpal: true */
 
 (function(win, doc) {
 
@@ -7,7 +7,7 @@
     return;
   }
 
-  var dom      = {pane: doc.getElementById('contentPane')};
+  var dom      = {pane: doc.getElementById("contentPane")};
   var SELECTOR = {};
   var CLASS    = {};
 
@@ -21,8 +21,8 @@
   //       (text: Resume)
   //   .F4  <= bookmark icon
   //
-  SELECTOR.RELOAD_BUTTON = '.d-k-l.b-c.b-c-U.JFd.JZ';
-  CLASS.RELOAD_BUTTON    = ['d-k-l', 'b-c', 'b-c-U', 'JFd', 'JZ'];
+  SELECTOR.RELOAD_BUTTON = ".d-k-l.b-c.b-c-U.JFd.JZ";
+  CLASS.RELOAD_BUTTON    = ["d-k-l", "b-c", "b-c-U", "JFd", "JZ"];
 
   //
   // .gb_zb.gb_Hb.gb_j
@@ -33,7 +33,7 @@
   //   .gb_ea.gb_Fa.gb_Hb.gb_j
   //     div[aria-hidden]     <= for account palette
   //
-  SELECTOR.OVERLAY_FRAME = '.gb_zb.gb_Hb.gb_j [aria-hidden="false"]';
+  SELECTOR.OVERLAY_FRAME = ".gb_zb.gb_Hb.gb_j [aria-hidden='false']";
 
 
   //
@@ -147,7 +147,7 @@
     observer.observe(dom.pane, {childList: true, subtree: true});
 
     // observe scrolling to top
-    win.addEventListener('scroll', function() {
+    win.addEventListener("scroll", function() {
       if (isScrollTop()) {
         onScrollTop();
       }
@@ -168,7 +168,7 @@
     var isCommentBoxHasFocus = function() {
       var focus = doc.activeElement;
       try {
-        return (focus && hasClasses(focus, ['editable']) && !focus.parentNode.parentNode.id.search(/.+\.editor$/));
+        return (focus && hasClasses(focus, ["editable"]) && !focus.parentNode.parentNode.id.search(/.+\.editor$/));
       }
       catch (error) {
         return false;
