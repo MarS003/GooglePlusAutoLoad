@@ -1,10 +1,10 @@
-/* global gpal: true; */
+var gpal = gpal || {};
 
-/************************************************************************
+/**************************************************************************************
  *
- * Loading New Posts (for Firefox add-on)
+ * Loading New Posts (for Safari Extension)
  *
- */
+ *************************************************************************************/
 gpal.Loader = {
 
   /*
@@ -19,10 +19,10 @@ gpal.Loader = {
   load: function() {
 
     // if overlay frame is opened
-    var frame = gpal.doc.querySelector(gpal.SELECTOR.OVERLAY_FRAME);
+    var frame = document.querySelector(gpal.SELECTOR.OVERLAY_FRAME);
     if (frame) {
       var observer = new MutationObserver(function() {
-        if (!gpal.doc.querySelector(gpal.SELECTOR.OVERLAY_FRAME)) {
+        if (!document.querySelector(gpal.SELECTOR.OVERLAY_FRAME)) {
           // retry to load
           gpal.LoaderProxy.load();
         }
@@ -33,7 +33,7 @@ gpal.Loader = {
 
     // if no-opverlay frame is opened
     else {
-      var btn = gpal.doc.querySelector(gpal.SELECTOR.RELOAD_BUTTON);
+      var btn = document.querySelector(gpal.SELECTOR.RELOAD_BUTTON);
       if (btn) {
         btn.click();
       }

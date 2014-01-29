@@ -17,51 +17,6 @@ CLEAN.include('dist/*.safariextz')
 
 ##################################################################################
 #
-# file list defination
-#
-
-# Files to make chrome extension
-CHROME_JS = FileList[
-  'src/helper.js',
-  'src/ui.js',
-  'src/observer.js',
-  'src/loaderProxy.js',
-  'src/loader.chrome.js',
-  'src/entry.js'
-]
-
-# Files to make opera extension
-OPERA_JS = FileList[
-  'src/helper.js',
-  'src/ui.js',
-  'src/observer.js',
-  'src/loaderProxy.js',
-  'src/loader.chrome.js', # identically same as chrome
-  'src/entry.js'
-]
-
-# Files to make firefox add-on
-FIREFOX_JS = FileList[
-  'src/helper.js',
-  'src/ui.js',
-  'src/observer.js',
-  'src/loaderProxy.js',
-  'src/loader.firefox.js',
-  'src/entry.js'
-]
-
-# Files to make safari extension
-SAFARI_JS = FileList[
-  'src/helper.js',
-  'src/ui.js',
-  'src/observer.js',
-  'src/loaderProxy.js',
-  'src/loader.safari.js',
-  'src/entry.js'
-]
-
-##################################################################################
-#
 # default task
 #
 task :default => [:chrome, :opera, :firefox, :safari]
@@ -76,7 +31,8 @@ task :default => [:chrome, :opera, :firefox, :safari]
 #   SIMPLE_OPTIMIZATIONS
 #   ADVANCED_OPTIMIZATIONS
 #
-rule 'content.js' => proc { |path|
+rule 'dist/compiled.js' => proc { |path|
+  p path
   if    path =~ /chrome/  then 'dist/content.chrome.js'
   elsif path =~ /opera/   then 'dist/content.opera.js'
  #elsif path =~ /firefox/ then 'dist/content.firefox.js'
@@ -129,10 +85,13 @@ file 'dist/chrome.zip' => ['dist/chrome/content.js',
   sh "zip -q #{t.name} #{archive}"
 end
 
-file 'dist/content.chrome.js' => CHROME_JS do |t|
+file 'dist/content.chrome.js' => ['src/loader.chrome.js', 'src/content.js'] do |t|
   sh "echo '\"use strict\";' > #{t.name}"
-  sh "echo 'window.gpal = window.gpal || {};' >> #{t.name}"
   sh "cat #{t.prerequisites.join(' ')} >> #{t.name}"
+end
+
+file 'dist/chrome/content.js' => 'dist/compiled.js' do |t|
+  sh "cp #{t.prerequisites[0]} #{t.name}"
 end
 
 
@@ -147,7 +106,7 @@ task :opera => ['dist/opera/content.js',
                 'dist/opera/icon-48.png',
                 'dist/opera/icon-128.png']
 
-file 'dist/content.opera.js' => OPERA_JS do |t|
+file 'dist/content.opera.js' => ['src/loader.chrome.js', 'src/content.js'] do |t|
   sh "echo '\"use strict\";' > #{t.name}"
   sh "echo 'window.gpal = window.gpal || {};' >> #{t.name}"
   sh "cat #{t.prerequisites.join(' ')} >> #{t.name}"
@@ -168,7 +127,7 @@ file 'dist/auto-load-new-posts-for-google-plus.xpi' => ['dist/firefox/data/conte
   sh "(cd dist; #{CFX_PATH} --pkgdir=firefox xpi;)"
 end
 
-file 'dist/firefox/data/content.js' => FIREFOX_JS do |t|
+file 'dist/firefox/data/content.js' => ['src/loader.firefox.js', 'src/content.js'] do |t|
   sh "echo '\"use strict\";' > #{t.name}"
   sh "echo 'window.gpal = window.gpal || {};' >> #{t.name}"
   sh "cat #{t.prerequisites.join(' ')} >> #{t.name}"
@@ -183,7 +142,7 @@ task :safari => ['dist/safari/autol-load-new-posts-for-google-plus.safariextensi
                  'dist/safari/autol-load-new-posts-for-google-plus.safariextension/content.css',
                  'dist/safari/autol-load-new-posts-for-google-plus.safariextension/icon-128.png']
 
-file 'dist/content.safari.js' => SAFARI_JS do |t|
+file 'dist/content.safari.js' => ['src/loader.safari.js', 'src/content.js'] do |t|
   sh "echo '\"use strict\";' > #{t.name}"
   sh "echo 'window.gpal = window.gpal || {};' >> #{t.name}"
   sh "cat #{t.prerequisites.join(' ')} >> #{t.name}"

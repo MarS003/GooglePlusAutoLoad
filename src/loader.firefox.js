@@ -1,10 +1,10 @@
-/* global gpal: true; */
+var gpal = gpal || {};
 
-/************************************************************************
+/**************************************************************************************
  *
- * Loading New Posts (for Firefox add-on)
+ * Loading New Posts (for Firefox Extension)
  *
- */
+ *************************************************************************************/
 gpal.Loader = {
 
   /*
@@ -24,9 +24,9 @@ gpal.Loader = {
   },
 
   _emulateKeyEvent: function(type, charCode, keyCode, keyIdentifier) {
-    var ev = gpal.doc.createEvent('KeyboardEvent');
+    var ev = document.createEvent('KeyboardEvent');
     ev.initKeyEvent(type, true, true, null, false, false, false, false, keyCode, charCode);
-    gpal.doc.dispatchEvent(ev);
+    document.dispatchEvent(ev);
   }
 
 };
