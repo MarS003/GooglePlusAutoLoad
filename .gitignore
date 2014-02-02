@@ -1,4 +1,9 @@
 dist/**/content.*
-dist/*.js
+dist/**/*.png
+dist/*.xpi
+dist/*.zip
+dist/*.nex
+dist/*.pem
+dist/*.crx
 node_modules/**/*
 .DS_Store
