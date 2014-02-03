@@ -89,7 +89,7 @@ gulp.task("firefox", function() {
       .pipe(gulp.dest(dest));
 
   // create xpi file
-  exec("~/Library/Developer/Local/Firefox/addon-sdk/bin/cfx --pkgdir=firefox xpi", {cwd: "dist"}, function(err) {
+  exec("cfx --pkgdir=firefox xpi", {cwd: "dist"}, function(err) {
     if (err !== null) 
       console.log("exec error: " + err);
   });
