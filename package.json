@@ -4,6 +4,9 @@
     "gulp-concat": "*",
     "gulp-uglify": "*",
     "gulp-csso": "*",
-    "gulp-clean": "*"
+    "gulp-clean": "*",
+    "gulp-json-editor": "~1.0.2",
+    "gulp-xml-editor": "~1.0.0"
+    "argh": "~0.1.1",
   }
 }

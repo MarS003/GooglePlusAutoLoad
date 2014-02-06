@@ -4,8 +4,15 @@ var uglify = require("gulp-uglify");
 var csso   = require("gulp-csso");
 var concat = require("gulp-concat");
 var clean  = require("gulp-clean");
+var jedit  = require("gulp-json-editor");
+var xedit  = require("gulp-xml-editor");
+var argv   = require("argh").argv;
 var exec   = require("child_process").exec;
 
+var version = null;
+if (argv.define && argv.define.version) {
+  version = argv.define.version;
+}
 
 /***********************************************************************************
  *
@@ -39,6 +46,16 @@ gulp.task("chrome", function() {
   gulp.src(["contrib/icon/icon-16.png", "contrib/icon/icon-48.png", "contrib/icon/icon-128.png"])
       .pipe(gulp.dest(dest));
 
+  // update version
+  if (version) {
+    gulp.src("dist/chrome/manifest.json")
+        .pipe(jedit(function(json) {
+          json.version = version;
+          return json;
+        }))
+      .pipe(gulp.dest(dest));
+  }
+
   // create zip file
   exec("zip -q dist/auto-load-new-posts-for-google-plus.zip dist/chrome/*");
 });
@@ -66,6 +83,16 @@ gulp.task("opera", function() {
   // other resource file
   gulp.src(["contrib/icon/icon-16.png", "contrib/icon/icon-48.png", "contrib/icon/icon-128.png"])
       .pipe(gulp.dest(dest));
+
+  // update version
+  if (version) {
+    gulp.src("dist/opera/manifest.json")
+        .pipe(jedit(function(json) {
+          json.version = version;
+          return json;
+        }))
+      .pipe(gulp.dest(dest));
+  }
 });
 
 
@@ -88,6 +115,16 @@ gulp.task("firefox", function() {
       .pipe(csso())
       .pipe(gulp.dest(dest));
 
+  // update version
+  if (version) {
+    gulp.src("dist/firefox/package.json")
+        .pipe(jedit(function(json) {
+          json.version = version;
+          return json;
+        }))
+      .pipe(gulp.dest("dist/firefox"));
+  }
+
   // create xpi file
   exec("cfx --pkgdir=firefox xpi", {cwd: "dist"}, function(err) {
     if (err !== null) 
@@ -102,7 +139,7 @@ gulp.task("firefox", function() {
  *
  **********************************************************************************/
 gulp.task("safari", function() {
-  var dest = "dist/safari/autol-load-new-posts-for-google-plus.safariextension";
+  var dest = "dist/safari/auto-load-new-posts-for-google-plus.safariextension";
 
   // javascript file
   gulp.src(["src/loader.safari.js", "src/content.js"])
@@ -118,6 +155,25 @@ gulp.task("safari", function() {
   // other resource file
   gulp.src(["contrib/icon/icon-128.png"])
       .pipe(gulp.dest(dest));
+
+  // update version
+  if (version) {
+    gulp.src("dist/safari/auto-load-new-posts-for-google-plus.safariextension/info.plist")
+        .pipe(xedit(function(xml) {
+          xml.get('//key[./text()="CFBundleVersion"]').nextElement().text(version);
+          xml.get('//key[./text()="CFBundleShortVersionString"]').nextElement().text(version);
+          return xml;
+        }))
+        .pipe(gulp.dest("dist/safari/auto-load-new-posts-for-google-plus.safariextension"));
+
+    gulp.src("dist/safari/auto-load-new-posts-for-google-plus.plist")
+        .pipe(xedit(function(xml) {
+          xml.get('//key[./text()="CFBundleVersion"]').nextElement().text(version);
+          xml.get('//key[./text()="CFBundleShortVersionString"]').nextElement().text(version);
+          return xml;
+        }))
+        .pipe(gulp.dest("dist/safari"));
+  }
 });
 
 
