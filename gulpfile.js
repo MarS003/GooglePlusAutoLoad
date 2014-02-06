@@ -52,7 +52,7 @@ gulp.task("chrome", function() {
         .pipe(jedit(function(json) {
           json.version = version;
           return json;
-        }))
+        }, true))
       .pipe(gulp.dest(dest));
   }
 
@@ -90,7 +90,7 @@ gulp.task("opera", function() {
         .pipe(jedit(function(json) {
           json.version = version;
           return json;
-        }))
+        }, true))
       .pipe(gulp.dest(dest));
   }
 });
@@ -121,7 +121,7 @@ gulp.task("firefox", function() {
         .pipe(jedit(function(json) {
           json.version = version;
           return json;
-        }))
+        }, true))
       .pipe(gulp.dest("dist/firefox"));
   }
 
