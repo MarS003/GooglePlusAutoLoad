@@ -1,18 +1,38 @@
-/* global require: true, console: true; */
+/* global require: true */
 var gulp   = require("gulp");
+var gutil  = require("gulp-util");
 var uglify = require("gulp-uglify");
 var csso   = require("gulp-csso");
 var concat = require("gulp-concat");
 var clean  = require("gulp-clean");
 var jedit  = require("gulp-json-editor");
 var xedit  = require("gulp-xml-editor");
-var argv   = require("argh").argv;
 var exec   = require("child_process").exec;
 
-var version = null;
-if (argv.define && argv.define.version) {
-  version = argv.define.version;
+var version;
+if (gutil.env.define && gutil.env.define.version) {
+  version = gutil.env.define.version;
 }
+
+var Defer = function() {
+
+  var max = 0, count = 0, callback = null;
+
+  function onEventEnd() {
+    if (max === ++count) {
+      callback && callback();
+    }
+  }
+
+  this.until = function(ev) {
+    max++;
+    ev.on('end', onEventEnd);
+  };
+
+  this.exec = function(cb) {
+    callback = cb;
+  };
+};
 
 /***********************************************************************************
  *
@@ -29,35 +49,40 @@ gulp.task("default", ["chrome", "opera", "firefox", "safari"], function() {
  *
  **********************************************************************************/
 gulp.task("chrome", function() {
+
   var dest = "dist/chrome";
+  var d = new Defer();
 
   // javascript file
-  gulp.src(["src/loader.chrome.js", "src/content.js"])
+  d.until(gulp.src(["src/loader.chrome.js", "src/content.js"])
       .pipe(uglify())
       .pipe(concat("content.js"))
-      .pipe(gulp.dest(dest));
+      .pipe(gulp.dest(dest)));
 
   // css file
-  gulp.src(["style/content.css"])
+  d.until(gulp.src(["style/content.css"])
       .pipe(csso())
-      .pipe(gulp.dest(dest));
+      .pipe(gulp.dest(dest)));
 
   // other resource file
-  gulp.src(["contrib/icon/icon-16.png", "contrib/icon/icon-48.png", "contrib/icon/icon-128.png"])
-      .pipe(gulp.dest(dest));
+  d.until(gulp.src(["contrib/icon/icon-16.png", "contrib/icon/icon-48.png", "contrib/icon/icon-128.png"])
+      .pipe(gulp.dest(dest)));
 
   // update version
   if (version) {
-    gulp.src("dist/chrome/manifest.json")
+    d.until(gulp.src("dist/chrome/manifest.json")
         .pipe(jedit(function(json) {
           json.version = version;
           return json;
         }, true))
-      .pipe(gulp.dest(dest));
+        .pipe(gulp.dest(dest)));
   }
 
   // create zip file
-  exec("zip -q dist/auto-load-new-posts-for-google-plus.zip dist/chrome/*");
+  d.exec(function() {
+    exec("zip -q dist/auto-load-new-posts-for-google-plus.zip dist/chrome/*");
+  });
+
 });
 
 
@@ -67,6 +92,7 @@ gulp.task("chrome", function() {
  *
  **********************************************************************************/
 gulp.task("opera", function() {
+
   var dest = "dist/opera";
 
   // javascript file
@@ -91,7 +117,7 @@ gulp.task("opera", function() {
           json.version = version;
           return json;
         }, true))
-      .pipe(gulp.dest(dest));
+        .pipe(gulp.dest(dest));
   }
 });
 
@@ -102,34 +128,36 @@ gulp.task("opera", function() {
  *
  **********************************************************************************/
 gulp.task("firefox", function() {
+
   var dest = "dist/firefox/data";
+  var d = new Defer();
 
   // javascript file
-  gulp.src(["src/loader.firefox.js", "src/content.js"])
+  d.until(gulp.src(["src/loader.firefox.js", "src/content.js"])
       .pipe(uglify())
       .pipe(concat("content.js"))
-      .pipe(gulp.dest(dest));
+      .pipe(gulp.dest(dest)));
 
   // css file
-  gulp.src(["style/content.css"])
+  d.until(gulp.src(["style/content.css"])
       .pipe(csso())
-      .pipe(gulp.dest(dest));
+      .pipe(gulp.dest(dest)));
 
   // update version
   if (version) {
-    gulp.src("dist/firefox/package.json")
+    d.until(gulp.src("dist/firefox/package.json")
         .pipe(jedit(function(json) {
           json.version = version;
           return json;
         }, true))
-      .pipe(gulp.dest("dist/firefox"));
+        .pipe(gulp.dest("dist/firefox")));
   }
 
   // create xpi file
-  exec("cfx --pkgdir=firefox xpi", {cwd: "dist"}, function(err) {
-    if (err !== null) 
-      console.log("exec error: " + err);
+  d.exec(function() {
+    exec("cfx --pkgdir=firefox xpi", {cwd: "dist"});
   });
+
 });
 
 
@@ -139,6 +167,7 @@ gulp.task("firefox", function() {
  *
  **********************************************************************************/
 gulp.task("safari", function() {
+
   var dest = "dist/safari/auto-load-new-posts-for-google-plus.safariextension";
 
   // javascript file

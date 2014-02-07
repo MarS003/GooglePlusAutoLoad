@@ -1,12 +1,12 @@
 {
   "name": "auto-load-new-posts-for-google-plus",
   "devDependencies": {
+    "gulp-util": "*",
     "gulp-concat": "*",
     "gulp-uglify": "*",
     "gulp-csso": "*",
     "gulp-clean": "*",
     "gulp-json-editor": "*",
-    "gulp-xml-editor": "*",
-    "argh": "*"
+    "gulp-xml-editor": "*"
   }
 }
