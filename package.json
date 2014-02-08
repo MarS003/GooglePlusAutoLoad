@@ -1,6 +1,7 @@
 {
   "name": "auto-load-new-posts-for-google-plus",
   "devDependencies": {
+    "gulp": "*",
     "gulp-util": "*",
     "gulp-concat": "*",
     "gulp-uglify": "*",

@@ -71,10 +71,9 @@ gulp.task("chrome", function() {
   // update version
   if (version) {
     d.until(gulp.src("dist/chrome/manifest.json")
-        .pipe(jedit(function(json) {
-          json.version = version;
-          return json;
-        }, true))
+        .pipe(jedit({
+          'version': version
+        }))
         .pipe(gulp.dest(dest)));
   }
 
